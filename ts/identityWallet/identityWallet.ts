@@ -3,7 +3,7 @@ import { Credential } from '../credentials/credential/credential'
 import { SignedCredential } from '../credentials/signedCredential/signedCredential'
 import { IIdentityWalletCreateArgs, IPrivateKeyWithId } from './types'
 import { Identity } from '../identity/identity'
-import { privateKeyToPublicKey } from '../utils/crypto'
+import { privateKeyToPublicKey, privateKeyToDID } from '../utils/crypto'
 import { ICredentialRequestPayloadCreationAttrs } from '../interactionFlows/credentialRequest/types'
 import { JSONWebToken } from '../interactionFlows/JSONWebToken'
 import { IAuthPayloadCreationAttrs } from '../interactionFlows/authentication/types'
@@ -19,6 +19,9 @@ import { CredentialOfferRequestPayload } from '../interactionFlows/credentialOff
 import {
   CredentialOfferResponsePayload
 } from '../interactionFlows/credentialOfferResponse/credentialOfferResponsePayload'
+import { IRegistryInstanceCreationArgs } from '../registries/types';
+import { DidDocument } from '../identity/didDocument';
+import { createJolocomRegistry } from '../registries/jolocomRegistry';
 
 export class IdentityWallet {
   private identityDocument: Identity
@@ -125,5 +128,22 @@ export class IdentityWallet {
     await signedCredential.generateSignature(this.privateIdentityKey)
 
     return signedCredential
+  }
+
+  public static async createWithRegistryInstanceArgs(args: IRegistryInstanceCreationArgs): Promise<IdentityWallet> {
+    const { privateIdentityKey, privateEthereumKey } = args
+    const ddo = await new DidDocument().fromPrivateKey(privateIdentityKey)
+    const identity = Identity.create({ didDocument: ddo.toJSON() })
+    const identityWallet = IdentityWallet.create({ privateIdentityKey: privateIdentityKey, identity })
+
+    await createJolocomRegistry().commit({ wallet: identityWallet, privateEthereumKey })
+    return identityWallet
+  }
+
+  public static async authenticateIdentityKey(privateIdentityKey: Buffer): Promise<IdentityWallet> {
+    const did = privateKeyToDID(privateIdentityKey)
+    const identity = await createJolocomRegistry().resolve(did)
+
+    return IdentityWallet.create({ privateIdentityKey, identity })
   }
 }

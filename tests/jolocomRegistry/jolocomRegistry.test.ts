@@ -53,7 +53,7 @@ describe('JolocomRegistry', () => {
       const jolocomRegistry = createJolocomRegistry()
 
       commit = sandbox.stub(JolocomRegistry.prototype, 'commit').resolves()
-      identityWallet = await jolocomRegistry.create({
+      identityWallet = await IdentityWallet.createWithRegistryInstanceArgs({
         privateIdentityKey: testPrivateIdentityKey,
         privateEthereumKey: testPrivateEthereumKey
       })
@@ -216,7 +216,7 @@ describe('JolocomRegistry', () => {
         .withArgs(ddo.getDID())
         .resolves(Identity.create({ didDocument: ddo.toJSON() }))
 
-      identityWallet = await jolocomRegistry.authenticate(testPrivateIdentityKey)
+      identityWallet = await IdentityWallet.authenticateIdentityKey(testPrivateIdentityKey)
     })
 
     it('should call resolve', () => {

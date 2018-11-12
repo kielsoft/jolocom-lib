@@ -69,7 +69,7 @@ describe('Integration Test', () => {
 
   describe('Creation of identity', () => {
     it('should generate a valid DDO', async () => {
-      const identityWallet: IdentityWallet = await jolocomRegistry.create({
+      const identityWallet: IdentityWallet = await IdentityWallet.createWithRegistryInstanceArgs({
         privateIdentityKey: testPrivateIdentityKey,
         privateEthereumKey: testPrivateEthereumKey
       })
@@ -82,7 +82,7 @@ describe('Integration Test', () => {
 
   describe('Authentication', () => {
     it('should return authenticated identity wallet', async () => {
-      const identityWallet = await jolocomRegistry.authenticate(testPrivateIdentityKey)
+      const identityWallet = await IdentityWallet.authenticateIdentityKey(testPrivateIdentityKey)
 
       expect(identityWallet).to.be.an.instanceOf(IdentityWallet)
       expect(identityWallet.getIdentity().getDID()).to.eq(sampleDid)
@@ -91,7 +91,7 @@ describe('Integration Test', () => {
 
   describe('Public Profile', () => {
     it('should correctly add and commit public profile credential', async () => {
-      const identityWallet = await jolocomRegistry.authenticate(testPrivateIdentityKey)
+      const identityWallet = await IdentityWallet.authenticateIdentityKey(testPrivateIdentityKey)
       const publicProfileCredential = await identityWallet.create.signedCredential({
         metadata: claimsMetadata.publicProfile,
         claim: testClaim
@@ -126,12 +126,12 @@ describe('Integration Test', () => {
     let identityWalletService
 
     before(async () => {
-      identityWalletUser = await jolocomRegistry.create({
+      identityWalletUser = await IdentityWallet.createWithRegistryInstanceArgs({
         privateIdentityKey: testPrivateIdentityKey,
         privateEthereumKey: testPrivateEthereumKey
       })
 
-      identityWalletService = await jolocomRegistry.create({
+      identityWalletService = await IdentityWallet.createWithRegistryInstanceArgs({
         privateIdentityKey: testPrivateIdentityKey3,
         privateEthereumKey: testPrivateEthereumKey3
       })
@@ -214,12 +214,12 @@ describe('Integration Test', () => {
     let identityWalletService
 
     before(async () => {
-      identityWalletUser = await jolocomRegistry.create({
+      identityWalletUser = await IdentityWallet.createWithRegistryInstanceArgs({
         privateIdentityKey: testPrivateIdentityKey,
         privateEthereumKey: testPrivateEthereumKey
       })
 
-      identityWalletService = await jolocomRegistry.create({
+      identityWalletService = await IdentityWallet.createWithRegistryInstanceArgs({
         privateIdentityKey: testPrivateIdentityKey3,
         privateEthereumKey: testPrivateEthereumKey3
       })
@@ -328,12 +328,12 @@ describe('Integration Test', () => {
     let identityWalletService
 
     before(async () => {
-      identityWalletUser = await jolocomRegistry.create({
+      identityWalletUser = await IdentityWallet.createWithRegistryInstanceArgs({
         privateIdentityKey: testPrivateIdentityKey,
         privateEthereumKey: testPrivateEthereumKey
       })
 
-      identityWalletService = await jolocomRegistry.create({
+      identityWalletService = await IdentityWallet.createWithRegistryInstanceArgs({
         privateIdentityKey: testPrivateIdentityKey3,
         privateEthereumKey: testPrivateEthereumKey3
       })

@@ -1,7 +1,5 @@
 import { IIpfsConnector } from '../ipfs/types'
 import { IEthereumConnector } from '../ethereum/types'
-import { IdentityWallet } from '../identityWallet/identityWallet'
-import { privateKeyToDID } from '../utils/crypto'
 import { DidDocument } from '../identity/didDocument'
 import { IDidDocumentAttrs } from '../identity/didDocument/types'
 import { SignedCredential } from '../credentials/signedCredential/signedCredential'
@@ -21,14 +19,12 @@ export class JolocomRegistry {
   public ipfsConnector: IIpfsConnector
   public ethereumConnector: IEthereumConnector
 
-  public async create(args: IRegistryInstanceCreationArgs): Promise<IdentityWallet> {
-    const { privateIdentityKey, privateEthereumKey } = args
-    const ddo = await new DidDocument().fromPrivateKey(privateIdentityKey)
-    const identity = Identity.create({ didDocument: ddo.toJSON() })
-    const identityWallet = IdentityWallet.create({ privateIdentityKey: privateIdentityKey, identity })
-
-    await this.commit({ wallet: identityWallet, privateEthereumKey })
-    return identityWallet
+  /**
+   * 
+   * @deprecated use IdenetityWallet.createWithRegistryInstanceArgs(args) instead
+   */
+  public async create(args: IRegistryInstanceCreationArgs): Promise<any> {
+      return Promise.reject("Method deprecated, use IdenetityWallet.createWithRegistryInstanceArgs(args) instead")
   }
 
   public async commit({ wallet, privateEthereumKey }: IRegistryCommitArgs): Promise<void> {
@@ -109,11 +105,12 @@ export class JolocomRegistry {
     return SignedCredential.fromJSON(publicProfile)
   }
 
-  public async authenticate(privateIdentityKey: Buffer): Promise<IdentityWallet> {
-    const did = privateKeyToDID(privateIdentityKey)
-    const identity = await this.resolve(did)
-
-    return IdentityWallet.create({ privateIdentityKey, identity })
+  /**
+   * 
+   * @deprecated use IdenetityWallet.authenticateIdentityKey(privateIdentityKey) instead
+   */
+  public async authenticate(privateIdentityKey: Buffer): Promise<any> {
+    return Promise.reject("Method deprecated, use IdenetityWallet.authenticateIdentityKey(privateIdentityKey) instead")
   }
 
   public async validateSignature(obj: IVerifiable): Promise<boolean> {

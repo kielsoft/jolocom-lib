@@ -1,9 +1,11 @@
 import { DidDocument } from './didDocument'
 import { SignedCredential } from '../credentials/signedCredential/signedCredential'
 import { IIdentityCreateArgs } from './types'
+import { IIdentity } from '../identityWallet/types';
+import { IDidDocument } from './didDocument/types';
 
-export class Identity {
-  public didDocument: DidDocument
+export class Identity implements IIdentity {
+  public didDocument: IDidDocument
   private profile?: SignedCredential
 
   public publicProfile = {

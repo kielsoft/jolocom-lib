@@ -9,7 +9,7 @@ import { IRegistryCommitArgs, IRegistryInstanceCreationArgs, IRegistryStaticCrea
 import { jolocomIpfsStorageAgent } from '../ipfs'
 import { jolocomEthereumResolver } from '../ethereum'
 import { ServiceEndpointsSection } from '../identity/didDocument/sections'
-import { IVerifiable } from './types'
+import { IVerifiable } from '../types';
 
 /** Jolocom specific Registry, which uses IPFS
  *  and Ethereum for registering the indentity and the resolution

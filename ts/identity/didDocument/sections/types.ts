@@ -15,3 +15,18 @@ export interface IServiceEndpointSectionAttrs {
   serviceEndpoint: string
   description: string
 }
+
+export interface IServiceEndpointsSection {
+    getType(): string
+    getServiceEndpoint(): string
+    toJSON(): IServiceEndpointSectionAttrs
+}
+
+export interface IPublicKeySection {
+    fromEcdsa(publicKey: Buffer, id: string): IPublicKeySection
+    getIdentifier(): string 
+    getType(): string 
+    getPublicKeyHex(): string 
+    toJSON(): IPublicKeySectionAttrs 
+    fromJSON(json: IPublicKeySectionAttrs): IPublicKeySection 
+  }

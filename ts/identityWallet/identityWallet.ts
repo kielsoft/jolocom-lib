@@ -1,7 +1,7 @@
 import { BaseMetadata } from 'cred-types-jolocom-core'
 import { Credential } from '../credentials/credential/credential'
 import { SignedCredential } from '../credentials/signedCredential/signedCredential'
-import { IIdentityWalletCreateArgs, IPrivateKeyWithId } from './types'
+import { IIdentityWalletCreateArgs, IPrivateKeyWithId, IIdentity, IIdentityWallet } from './types'
 import { Identity } from '../identity/identity'
 import { privateKeyToPublicKey, privateKeyToDID } from '../utils/crypto'
 import { ICredentialRequestPayloadCreationAttrs } from '../interactionFlows/credentialRequest/types'
@@ -23,8 +23,8 @@ import { IRegistryInstanceCreationArgs } from '../registries/types';
 import { DidDocument } from '../identity/didDocument';
 import { createJolocomRegistry } from '../registries/jolocomRegistry';
 
-export class IdentityWallet {
-  private identityDocument: Identity
+export class IdentityWallet implements IIdentityWallet{
+  private identityDocument: IIdentity
   private privateIdentityKey: IPrivateKeyWithId
 
   public create = {
@@ -109,11 +109,11 @@ export class IdentityWallet {
     return identityWallet
   }
 
-  public getIdentity(): Identity {
+  public getIdentity(): IIdentity {
     return this.identityDocument
   }
 
-  private setIdentity(identity: Identity): void {
+  private setIdentity(identity: IIdentity): void {
     this.identity = {
       publicProfile: identity.publicProfile
     }

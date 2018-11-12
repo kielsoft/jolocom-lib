@@ -1,9 +1,9 @@
 import { classToPlain, plainToClass, Exclude, Expose } from 'class-transformer'
-import { IServiceEndpointSectionAttrs } from './types'
+import { IServiceEndpointSectionAttrs, IServiceEndpointsSection } from './types'
 import 'reflect-metadata'
 
 @Exclude()
-export class ServiceEndpointsSection {
+export class ServiceEndpointsSection implements IServiceEndpointsSection {
 
   @Expose()
   private id: string

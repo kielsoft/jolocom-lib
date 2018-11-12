@@ -3,16 +3,16 @@ import { Transform, plainToClass, classToPlain, Type, Exclude, Expose } from 'cl
 import { canonize } from 'jsonld'
 import { Credential } from '../credential/credential'
 import { generateRandomID, sign, sha256, verifySignature, privateKeyToDID } from '../../utils/crypto'
-import { ISignedCredentialAttrs } from './types'
+import { ISignedCredentialAttrs, ISignedCredential } from './types'
 import { ILinkedDataSignature } from '../../linkedDataSignature/types'
 import { ContextEntry, BaseMetadata } from 'cred-types-jolocom-core'
 import { IClaimSection } from '../credential/types'
 import { EcdsaLinkedDataSignature } from '../../linkedDataSignature'
-import { IVerifiable, ISigner } from '../../registries/types'
+import { ISigner } from '../../types'
 import { IPrivateKeyWithId } from '../../identityWallet/types'
 
 @Exclude()
-export class SignedCredential implements IVerifiable {
+export class SignedCredential implements ISignedCredential {
   @Expose()
   private '@context': ContextEntry[]
 

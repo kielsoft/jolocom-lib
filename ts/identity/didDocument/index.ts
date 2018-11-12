@@ -1,9 +1,9 @@
 import { Transform, plainToClass, classToPlain, Type, Exclude, Expose } from 'class-transformer'
-import { IDidDocumentAttrs } from './types'
+import { IDidDocumentAttrs, IDidDocument } from './types'
 import { canonize } from 'jsonld'
 import { EcdsaLinkedDataSignature } from '../../linkedDataSignature'
 import { AuthenticationSection, PublicKeySection, ServiceEndpointsSection } from './sections'
-import { IVerifiable, ISigner } from '../../registries/types'
+import { ISigner } from '../../types'
 import { ContextEntry } from 'cred-types-jolocom-core'
 import { defaultContextIdentity } from '../../utils/contexts'
 import {
@@ -14,9 +14,10 @@ import {
   generateRandomID,
   sign
 } from '../../utils/crypto'
+import { IServiceEndpointsSection } from './sections/types';
 
 @Exclude()
-export class DidDocument implements IVerifiable {
+export class DidDocument implements IDidDocument {
   @Type(() => AuthenticationSection)
   @Expose()
   private authentication: AuthenticationSection[] = []
@@ -27,7 +28,7 @@ export class DidDocument implements IVerifiable {
 
   @Type(() => ServiceEndpointsSection)
   @Expose()
-  private service: ServiceEndpointsSection[] = []
+  private service: IServiceEndpointsSection[] = []
 
   @Type(() => Date)
   @Transform((value: Date) => value.toISOString(), { toPlainOnly: true })
@@ -45,7 +46,7 @@ export class DidDocument implements IVerifiable {
   @Expose()
   private id: string
 
-  public addServiceEndpoint(endpoint: ServiceEndpointsSection) {
+  public addServiceEndpoint(endpoint: IServiceEndpointsSection) {
     this.service = [endpoint]
   }
 
@@ -108,7 +109,7 @@ export class DidDocument implements IVerifiable {
     }
   }
 
-  public getServiceEndpoints(): ServiceEndpointsSection[] {
+  public getServiceEndpoints(): IServiceEndpointsSection[] {
     return this.service
   }
 

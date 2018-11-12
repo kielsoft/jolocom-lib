@@ -1,9 +1,9 @@
 import { classToPlain, plainToClass, Exclude, Expose } from 'class-transformer'
-import { IPublicKeySectionAttrs } from './types'
+import { IPublicKeySectionAttrs, IPublicKeySection } from './types'
 import 'reflect-metadata'
 
 @Exclude()
-export class PublicKeySection {
+export class PublicKeySection implements IPublicKeySection {
   @Expose()
   private id: string
 
